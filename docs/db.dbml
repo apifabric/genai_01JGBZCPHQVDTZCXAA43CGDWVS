@@ -1,0 +1,123 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+AudienceVote: Records audience votes for songs performed in events.
+Event: Records details of Eurovision events held annually.
+Song: Stores information about songs that contestants perform.
+Contestant: Stores details of contestants participating in the Eurovision contest.
+Country: Stores details about countries participating in the Eurovision contest.
+EventParticipation: Links contestants to the events they participate in.
+Host: Stores information about the hosts of the Eurovision contest.
+Judge: Stores details about judges in the Eurovision contest.
+Jury: Associates judges with the events they are judging.
+Performance: Stores details about performances in the Eurovision events.
+Vote: Records votes given by judges to songs performed by contestants.
+VoteSummary: Stores the total points received by each song, calculated manually.
+'''
+}
+
+Table AudienceVote {
+    id INTEGER [primary key]
+    event_id INTEGER 
+    song_id INTEGER 
+    points INTEGER 
+    }
+
+Table Event {
+    id INTEGER [primary key]
+    year INTEGER 
+    city VARCHAR 
+    start_date DATE 
+    end_date DATE 
+    }
+
+Table Song {
+    id INTEGER [primary key]
+    title VARCHAR 
+    duration INTEGER 
+    contestant_id INTEGER 
+    language VARCHAR 
+    }
+
+Table Contestant {
+    id INTEGER [primary key]
+    name VARCHAR 
+    country_id INTEGER 
+    bio VARCHAR 
+    }
+
+Table Country {
+    id INTEGER [primary key]
+    name VARCHAR 
+    code VARCHAR 
+    flag_image VARCHAR 
+    }
+
+Table EventParticipation {
+    id INTEGER [primary key]
+    event_id INTEGER 
+    contestant_id INTEGER 
+    }
+
+Table Host {
+    id INTEGER [primary key]
+    name VARCHAR 
+    country_id INTEGER 
+    years_hosted INTEGER 
+    }
+
+Table Judge {
+    id INTEGER [primary key]
+    name VARCHAR 
+    country_id INTEGER 
+    experience_years INTEGER 
+    }
+
+Table Jury {
+    id INTEGER [primary key]
+    event_id INTEGER 
+    judge_id INTEGER 
+    }
+
+Table Performance {
+    id INTEGER [primary key]
+    event_id INTEGER 
+    song_id INTEGER 
+    performance_time DATETIME 
+    }
+
+Table Vote {
+    id INTEGER [primary key]
+    judge_id INTEGER 
+    song_id INTEGER 
+    points INTEGER 
+    vote_time DATETIME 
+    }
+
+Table VoteSummary {
+    id INTEGER [primary key]
+    song_id INTEGER 
+    total_points INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: AudienceVote.(event_id) < Event.(id)
+    Ref: AudienceVote.(song_id) < Song.(id)
+    Ref: Song.(contestant_id) < Contestant.(id)
+    Ref: Contestant.(country_id) < Country.(id)
+    Ref: EventParticipation.(contestant_id) < Contestant.(id)
+    Ref: EventParticipation.(event_id) < Event.(id)
+    Ref: Host.(country_id) < Country.(id)
+    Ref: Judge.(country_id) < Country.(id)
+    Ref: Jury.(event_id) < Event.(id)
+    Ref: Jury.(judge_id) < Judge.(id)
+    Ref: Performance.(event_id) < Event.(id)
+    Ref: Performance.(song_id) < Song.(id)
+    Ref: Vote.(judge_id) < Judge.(id)
+    Ref: Vote.(song_id) < Song.(id)
+    Ref: VoteSummary.(song_id) < Song.(id)

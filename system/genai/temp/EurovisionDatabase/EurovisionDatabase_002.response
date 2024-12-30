@@ -1,0 +1,274 @@
+{
+    "models": [
+        {
+            "classname": "Country",
+            "code": "class Country(Base):\n    __tablename__ = 'country'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String)\n    code = Column(String)\n    flag_image = Column(String)\n",
+            "description": "Stores details about countries participating in the Eurovision contest.",
+            "name": "Country"
+        },
+        {
+            "classname": "Contestant",
+            "code": "class Contestant(Base):\n    __tablename__ = 'contestant'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String)\n    country_id = Column(Integer, ForeignKey('country.id'))\n    bio = Column(String)\n",
+            "description": "Stores details of contestants participating in the Eurovision contest.",
+            "name": "Contestant"
+        },
+        {
+            "classname": "Song",
+            "code": "class Song(Base):\n    __tablename__ = 'song'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    title = Column(String)\n    duration = Column(Integer) # Duration in seconds\n    contestant_id = Column(Integer, ForeignKey('contestant.id'))\n    language = Column(String)\n",
+            "description": "Stores information about songs that contestants perform.",
+            "name": "Song"
+        },
+        {
+            "classname": "Judge",
+            "code": "class Judge(Base):\n    __tablename__ = 'judge'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String)\n    country_id = Column(Integer, ForeignKey('country.id'))\n    experience_years = Column(Integer)\n",
+            "description": "Stores details about judges in the Eurovision contest.",
+            "name": "Judge"
+        },
+        {
+            "classname": "Vote",
+            "code": "class Vote(Base):\n    __tablename__ = 'vote'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    judge_id = Column(Integer, ForeignKey('judge.id'))\n    song_id = Column(Integer, ForeignKey('song.id'))\n    points = Column(Integer)\n    vote_time = Column(DateTime)\n",
+            "description": "Records votes given by judges to songs performed by contestants.",
+            "name": "Vote"
+        },
+        {
+            "classname": "Host",
+            "code": "class Host(Base):\n    __tablename__ = 'host'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String)\n    country_id = Column(Integer, ForeignKey('country.id'))\n    years_hosted = Column(Integer)\n",
+            "description": "Stores information about the hosts of the Eurovision contest.",
+            "name": "Host"
+        },
+        {
+            "classname": "Event",
+            "code": "class Event(Base):\n    __tablename__ = 'event'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    year = Column(Integer)\n    city = Column(String)\n    start_date = Column(Date)\n    end_date = Column(Date)\n",
+            "description": "Records details of Eurovision events held annually.",
+            "name": "Event"
+        },
+        {
+            "classname": "EventParticipation",
+            "code": "class EventParticipation(Base):\n    __tablename__ = 'event_participation'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    event_id = Column(Integer, ForeignKey('event.id'))\n    contestant_id = Column(Integer, ForeignKey('contestant.id'))\n",
+            "description": "Links contestants to the events they participate in.",
+            "name": "EventParticipation"
+        },
+        {
+            "classname": "Jury",
+            "code": "class Jury(Base):\n    __tablename__ = 'jury'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    event_id = Column(Integer, ForeignKey('event.id'))\n    judge_id = Column(Integer, ForeignKey('judge.id'))\n",
+            "description": "Associates judges with the events they are judging.",
+            "name": "Jury"
+        },
+        {
+            "classname": "Performance",
+            "code": "class Performance(Base):\n    __tablename__ = 'performance'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    event_id = Column(Integer, ForeignKey('event.id'))\n    song_id = Column(Integer, ForeignKey('song.id'))\n    performance_time = Column(DateTime)\n",
+            "description": "Stores details about performances in the Eurovision events.",
+            "name": "Performance"
+        },
+        {
+            "classname": "VoteSummary",
+            "code": "class VoteSummary(Base):\n    __tablename__ = 'vote_summary'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    song_id = Column(Integer, ForeignKey('song.id'))\n    total_points = Column(Integer)\n",
+            "description": "Stores the total points received by each song, calculated manually.",
+            "name": "VoteSummary"
+        },
+        {
+            "classname": "AudienceVote",
+            "code": "class AudienceVote(Base):\n    __tablename__ = 'audience_vote'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    event_id = Column(Integer, ForeignKey('event.id'))\n    song_id = Column(Integer, ForeignKey('song.id'))\n    points = Column(Integer)\n",
+            "description": "Records audience votes for songs performed in events.",
+            "name": "AudienceVote"
+        }
+    ],
+    "rules": [],
+    "test_data": "Country Test Data\nContestant Test Data\nSong Test Data\nJudge Test Data\nVote Test Data\nHost Test Data\nEvent Test Data\nEventParticipation Test Data\nJury Test Data\nPerformance Test Data\nVoteSummary Test Data\nAudienceVote Test Data",
+    "test_data_rows": [
+        {
+            "test_data_row_variable": "country_row_1",
+            "code": "country_row_1 = Country(name=\"United Kingdom\", code=\"UK\", flag_image=\"uk_flag.png\")"
+        },
+        {
+            "test_data_row_variable": "country_row_2",
+            "code": "country_row_2 = Country(name=\"Germany\", code=\"DE\", flag_image=\"de_flag.png\")"
+        },
+        {
+            "test_data_row_variable": "country_row_3",
+            "code": "country_row_3 = Country(name=\"Sweden\", code=\"SE\", flag_image=\"se_flag.png\")"
+        },
+        {
+            "test_data_row_variable": "country_row_4",
+            "code": "country_row_4 = Country(name=\"Italy\", code=\"IT\", flag_image=\"it_flag.png\")"
+        },
+        {
+            "test_data_row_variable": "contestant_row_1",
+            "code": "contestant_row_1 = Contestant(name=\"Contestant A\", country_id=1, bio=\"Talented singer from UK.\")"
+        },
+        {
+            "test_data_row_variable": "contestant_row_2",
+            "code": "contestant_row_2 = Contestant(name=\"Contestant B\", country_id=2, bio=\"Top performer from Germany.\")"
+        },
+        {
+            "test_data_row_variable": "contestant_row_3",
+            "code": "contestant_row_3 = Contestant(name=\"Contestant C\", country_id=3, bio=\"Rising star from Sweden.\")"
+        },
+        {
+            "test_data_row_variable": "contestant_row_4",
+            "code": "contestant_row_4 = Contestant(name=\"Contestant D\", country_id=4, bio=\"Legendary singer from Italy.\")"
+        },
+        {
+            "test_data_row_variable": "song_row_1",
+            "code": "song_row_1 = Song(title=\"Song A\", duration=180, contestant_id=1, language=\"English\")"
+        },
+        {
+            "test_data_row_variable": "song_row_2",
+            "code": "song_row_2 = Song(title=\"Song B\", duration=190, contestant_id=2, language=\"German\")"
+        },
+        {
+            "test_data_row_variable": "song_row_3",
+            "code": "song_row_3 = Song(title=\"Song C\", duration=200, contestant_id=3, language=\"Swedish\")"
+        },
+        {
+            "test_data_row_variable": "song_row_4",
+            "code": "song_row_4 = Song(title=\"Song D\", duration=210, contestant_id=4, language=\"Italian\")"
+        },
+        {
+            "test_data_row_variable": "judge_row_1",
+            "code": "judge_row_1 = Judge(name=\"Judge A\", country_id=1, experience_years=5)"
+        },
+        {
+            "test_data_row_variable": "judge_row_2",
+            "code": "judge_row_2 = Judge(name=\"Judge B\", country_id=2, experience_years=7)"
+        },
+        {
+            "test_data_row_variable": "judge_row_3",
+            "code": "judge_row_3 = Judge(name=\"Judge C\", country_id=3, experience_years=10)"
+        },
+        {
+            "test_data_row_variable": "judge_row_4",
+            "code": "judge_row_4 = Judge(name=\"Judge D\", country_id=4, experience_years=3)"
+        },
+        {
+            "test_data_row_variable": "vote_row_1",
+            "code": "vote_row_1 = Vote(judge_id=1, song_id=1, points=12, vote_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "vote_row_2",
+            "code": "vote_row_2 = Vote(judge_id=2, song_id=2, points=10, vote_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "vote_row_3",
+            "code": "vote_row_3 = Vote(judge_id=3, song_id=3, points=8, vote_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "vote_row_4",
+            "code": "vote_row_4 = Vote(judge_id=4, song_id=4, points=6, vote_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "host_row_1",
+            "code": "host_row_1 = Host(name=\"Host A\", country_id=1, years_hosted=2)"
+        },
+        {
+            "test_data_row_variable": "host_row_2",
+            "code": "host_row_2 = Host(name=\"Host B\", country_id=2, years_hosted=1)"
+        },
+        {
+            "test_data_row_variable": "host_row_3",
+            "code": "host_row_3 = Host(name=\"Host C\", country_id=3, years_hosted=3)"
+        },
+        {
+            "test_data_row_variable": "host_row_4",
+            "code": "host_row_4 = Host(name=\"Host D\", country_id=4, years_hosted=1)"
+        },
+        {
+            "test_data_row_variable": "event_row_1",
+            "code": "event_row_1 = Event(year=2023, city=\"London\", start_date=date(2023, 5, 1), end_date=date(2023, 5, 14))"
+        },
+        {
+            "test_data_row_variable": "event_row_2",
+            "code": "event_row_2 = Event(year=2022, city=\"Berlin\", start_date=date(2022, 6, 4), end_date=date(2022, 6, 18))"
+        },
+        {
+            "test_data_row_variable": "event_row_3",
+            "code": "event_row_3 = Event(year=2021, city=\"Stockholm\", start_date=date(2021, 5, 2), end_date=date(2021, 5, 16))"
+        },
+        {
+            "test_data_row_variable": "event_row_4",
+            "code": "event_row_4 = Event(year=2020, city=\"Rome\", start_date=date(2020, 4, 25), end_date=date(2020, 5, 9))"
+        },
+        {
+            "test_data_row_variable": "event_participation_row_1",
+            "code": "event_participation_row_1 = EventParticipation(event_id=1, contestant_id=1)"
+        },
+        {
+            "test_data_row_variable": "event_participation_row_2",
+            "code": "event_participation_row_2 = EventParticipation(event_id=2, contestant_id=2)"
+        },
+        {
+            "test_data_row_variable": "event_participation_row_3",
+            "code": "event_participation_row_3 = EventParticipation(event_id=3, contestant_id=3)"
+        },
+        {
+            "test_data_row_variable": "event_participation_row_4",
+            "code": "event_participation_row_4 = EventParticipation(event_id=4, contestant_id=4)"
+        },
+        {
+            "test_data_row_variable": "jury_row_1",
+            "code": "jury_row_1 = Jury(event_id=1, judge_id=1)"
+        },
+        {
+            "test_data_row_variable": "jury_row_2",
+            "code": "jury_row_2 = Jury(event_id=2, judge_id=2)"
+        },
+        {
+            "test_data_row_variable": "jury_row_3",
+            "code": "jury_row_3 = Jury(event_id=3, judge_id=3)"
+        },
+        {
+            "test_data_row_variable": "jury_row_4",
+            "code": "jury_row_4 = Jury(event_id=4, judge_id=4)"
+        },
+        {
+            "test_data_row_variable": "performance_row_1",
+            "code": "performance_row_1 = Performance(event_id=1, song_id=1, performance_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "performance_row_2",
+            "code": "performance_row_2 = Performance(event_id=2, song_id=2, performance_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "performance_row_3",
+            "code": "performance_row_3 = Performance(event_id=3, song_id=3, performance_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "performance_row_4",
+            "code": "performance_row_4 = Performance(event_id=4, song_id=4, performance_time=datetime.now())"
+        },
+        {
+            "test_data_row_variable": "vote_summary_row_1",
+            "code": "vote_summary_row_1 = VoteSummary(song_id=1, total_points=12)"
+        },
+        {
+            "test_data_row_variable": "vote_summary_row_2",
+            "code": "vote_summary_row_2 = VoteSummary(song_id=2, total_points=10)"
+        },
+        {
+            "test_data_row_variable": "vote_summary_row_3",
+            "code": "vote_summary_row_3 = VoteSummary(song_id=3, total_points=8)"
+        },
+        {
+            "test_data_row_variable": "vote_summary_row_4",
+            "code": "vote_summary_row_4 = VoteSummary(song_id=4, total_points=6)"
+        },
+        {
+            "test_data_row_variable": "audience_vote_row_1",
+            "code": "audience_vote_row_1 = AudienceVote(event_id=1, song_id=1, points=100)"
+        },
+        {
+            "test_data_row_variable": "audience_vote_row_2",
+            "code": "audience_vote_row_2 = AudienceVote(event_id=2, song_id=2, points=200)"
+        },
+        {
+            "test_data_row_variable": "audience_vote_row_3",
+            "code": "audience_vote_row_3 = AudienceVote(event_id=3, song_id=3, points=150)"
+        },
+        {
+            "test_data_row_variable": "audience_vote_row_4",
+            "code": "audience_vote_row_4 = AudienceVote(event_id=4, song_id=4, points=180)"
+        }
+    ],
+    "test_data_sqlite": "INSERT INTO country (name, code, flag_image) VALUES ('United Kingdom', 'UK', 'uk_flag.png');\nINSERT INTO country (name, code, flag_image) VALUES ('Germany', 'DE', 'de_flag.png');\nINSERT INTO country (name, code, flag_image) VALUES ('Sweden', 'SE', 'se_flag.png');\nINSERT INTO country (name, code, flag_image) VALUES ('Italy', 'IT', 'it_flag.png');\n\nINSERT INTO contestant (name, country_id, bio) VALUES ('Contestant A', 1, 'Talented singer from UK.');\nINSERT INTO contestant (name, country_id, bio) VALUES ('Contestant B', 2, 'Top performer from Germany.');\nINSERT INTO contestant (name, country_id, bio) VALUES ('Contestant C', 3, 'Rising star from Sweden.');\nINSERT INTO contestant (name, country_id, bio) VALUES ('Contestant D', 4, 'Legendary singer from Italy.');\n\nINSERT INTO song (title, duration, contestant_id, language) VALUES ('Song A', 180, 1, 'English');\nINSERT INTO song (title, duration, contestant_id, language) VALUES ('Song B', 190, 2, 'German');\nINSERT INTO song (title, duration, contestant_id, language) VALUES ('Song C', 200, 3, 'Swedish');\nINSERT INTO song (title, duration, contestant_id, language) VALUES ('Song D', 210, 4, 'Italian');\n\nINSERT INTO judge (name, country_id, experience_years) VALUES ('Judge A', 1, 5);\nINSERT INTO judge (name, country_id, experience_years) VALUES ('Judge B', 2, 7);\nINSERT INTO judge (name, country_id, experience_years) VALUES ('Judge C', 3, 10);\nINSERT INTO judge (name, country_id, experience_years) VALUES ('Judge D', 4, 3);\n\nINSERT INTO vote (judge_id, song_id, points, vote_time) VALUES (1, 1, 12, CURRENT_TIMESTAMP);\nINSERT INTO vote (judge_id, song_id, points, vote_time) VALUES (2, 2, 10, CURRENT_TIMESTAMP);\nINSERT INTO vote (judge_id, song_id, points, vote_time) VALUES (3, 3, 8, CURRENT_TIMESTAMP);\nINSERT INTO vote (judge_id, song_id, points, vote_time) VALUES (4, 4, 6, CURRENT_TIMESTAMP);\n\nINSERT INTO host (name, country_id, years_hosted) VALUES ('Host A', 1, 2);\nINSERT INTO host (name, country_id, years_hosted) VALUES ('Host B', 2, 1);\nINSERT INTO host (name, country_id, years_hosted) VALUES ('Host C', 3, 3);\nINSERT INTO host (name, country_id, years_hosted) VALUES ('Host D', 4, 1);\n\nINSERT INTO event (year, city, start_date, end_date) VALUES (2023, 'London', '2023-05-01', '2023-05-14');\nINSERT INTO event (year, city, start_date, end_date) VALUES (2022, 'Berlin', '2022-06-04', '2022-06-18');\nINSERT INTO event (year, city, start_date, end_date) VALUES (2021, 'Stockholm', '2021-05-02', '2021-05-16');\nINSERT INTO event (year, city, start_date, end_date) VALUES (2020, 'Rome', '2020-04-25', '2020-05-09');\n\nINSERT INTO event_participation (event_id, contestant_id) VALUES (1, 1);\nINSERT INTO event_participation (event_id, contestant_id) VALUES (2, 2);\nINSERT INTO event_participation (event_id, contestant_id) VALUES (3, 3);\nINSERT INTO event_participation (event_id, contestant_id) VALUES (4, 4);\n\nINSERT INTO jury (event_id, judge_id) VALUES (1, 1);\nINSERT INTO jury (event_id, judge_id) VALUES (2, 2);\nINSERT INTO jury (event_id, judge_id) VALUES (3, 3);\nINSERT INTO jury (event_id, judge_id) VALUES (4, 4);\n\nINSERT INTO performance (event_id, song_id, performance_time) VALUES (1, 1, CURRENT_TIMESTAMP);\nINSERT INTO performance (event_id, song_id, performance_time) VALUES (2, 2, CURRENT_TIMESTAMP);\nINSERT INTO performance (event_id, song_id, performance_time) VALUES (3, 3, CURRENT_TIMESTAMP);\nINSERT INTO performance (event_id, song_id, performance_time) VALUES (4, 4, CURRENT_TIMESTAMP);\n\nINSERT INTO vote_summary (song_id, total_points) VALUES (1, 12);\nINSERT INTO vote_summary (song_id, total_points) VALUES (2, 10);\nINSERT INTO vote_summary (song_id, total_points) VALUES (3, 8);\nINSERT INTO vote_summary (song_id, total_points) VALUES (4, 6);\n\nINSERT INTO audience_vote (event_id, song_id, points) VALUES (1, 1, 100);\nINSERT INTO audience_vote (event_id, song_id, points) VALUES (2, 2, 200);\nINSERT INTO audience_vote (event_id, song_id, points) VALUES (3, 3, 150);\nINSERT INTO audience_vote (event_id, song_id, points) VALUES (4, 4, 180);",
+    "name": "EurovisionDatabase"
+}

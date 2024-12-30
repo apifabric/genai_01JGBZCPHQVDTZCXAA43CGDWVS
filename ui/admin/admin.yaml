@@ -1,0 +1,364 @@
+about:
+  date: December 30, 2024 14:28:00
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 15
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  AudienceVote:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: event_id
+    - name: song_id
+    - name: points
+    description: Records audience votes for songs performed in events.
+    info_list: Records audience votes for songs performed in events.
+    tab_groups:
+    - direction: toone
+      fks:
+      - event_id
+      name: event
+      resource: Event
+    - direction: toone
+      fks:
+      - song_id
+      name: song
+      resource: Song
+    type: AudienceVote
+    user_key: id
+  Contestant:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: country_id
+    - name: bio
+    - name: id
+    description: Stores details of contestants participating in the Eurovision contest.
+    info_list: Stores details of contestants participating in the Eurovision contest.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - contestant_id
+      name: EventParticipationList
+      resource: EventParticipation
+    - direction: tomany
+      fks:
+      - contestant_id
+      name: SongList
+      resource: Song
+    - direction: toone
+      fks:
+      - country_id
+      name: country
+      resource: Country
+    type: Contestant
+    user_key: name
+  Country:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: code
+    - name: flag_image
+    - name: id
+    description: Stores details about countries participating in the Eurovision contest.
+    info_list: Stores details about countries participating in the Eurovision contest.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - country_id
+      name: ContestantList
+      resource: Contestant
+    - direction: tomany
+      fks:
+      - country_id
+      name: HostList
+      resource: Host
+    - direction: tomany
+      fks:
+      - country_id
+      name: JudgeList
+      resource: Judge
+    type: Country
+    user_key: name
+  Event:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: year
+    - name: city
+    - name: start_date
+      type: DATE
+    - name: end_date
+      type: DATE
+    description: Records details of Eurovision events held annually.
+    info_list: Records details of Eurovision events held annually.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - event_id
+      name: AudienceVoteList
+      resource: AudienceVote
+    - direction: tomany
+      fks:
+      - event_id
+      name: EventParticipationList
+      resource: EventParticipation
+    - direction: tomany
+      fks:
+      - event_id
+      name: JuryList
+      resource: Jury
+    - direction: tomany
+      fks:
+      - event_id
+      name: PerformanceList
+      resource: Performance
+    type: Event
+    user_key: id
+  EventParticipation:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: contestant_id
+    - name: event_id
+    description: Links contestants to the events they participate in.
+    info_list: Links contestants to the events they participate in.
+    tab_groups:
+    - direction: toone
+      fks:
+      - contestant_id
+      name: contestant
+      resource: Contestant
+    - direction: toone
+      fks:
+      - event_id
+      name: event
+      resource: Event
+    type: EventParticipation
+    user_key: id
+  Host:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: country_id
+    - name: id
+    - name: years_hosted
+    description: Stores information about the hosts of the Eurovision contest.
+    info_list: Stores information about the hosts of the Eurovision contest.
+    tab_groups:
+    - direction: toone
+      fks:
+      - country_id
+      name: country
+      resource: Country
+    type: Host
+    user_key: name
+  Judge:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: country_id
+    - name: experience_years
+    - name: id
+    description: Stores details about judges in the Eurovision contest.
+    info_list: Stores details about judges in the Eurovision contest.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - judge_id
+      name: JuryList
+      resource: Jury
+    - direction: tomany
+      fks:
+      - judge_id
+      name: VoteList
+      resource: Vote
+    - direction: toone
+      fks:
+      - country_id
+      name: country
+      resource: Country
+    type: Judge
+    user_key: name
+  Jury:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: event_id
+    - name: judge_id
+    description: Associates judges with the events they are judging.
+    info_list: Associates judges with the events they are judging.
+    tab_groups:
+    - direction: toone
+      fks:
+      - event_id
+      name: event
+      resource: Event
+    - direction: toone
+      fks:
+      - judge_id
+      name: judge
+      resource: Judge
+    type: Jury
+    user_key: id
+  Performance:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: event_id
+    - name: song_id
+    - name: performance_time
+      type: DATETIME
+    description: Stores details about performances in the Eurovision events.
+    info_list: Stores details about performances in the Eurovision events.
+    tab_groups:
+    - direction: toone
+      fks:
+      - event_id
+      name: event
+      resource: Event
+    - direction: toone
+      fks:
+      - song_id
+      name: song
+      resource: Song
+    type: Performance
+    user_key: id
+  Song:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: contestant_id
+    - name: title
+    - name: duration
+    - name: language
+    description: Stores information about songs that contestants perform.
+    info_list: Stores information about songs that contestants perform.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - song_id
+      name: AudienceVoteList
+      resource: AudienceVote
+    - direction: tomany
+      fks:
+      - song_id
+      name: PerformanceList
+      resource: Performance
+    - direction: tomany
+      fks:
+      - song_id
+      name: VoteList
+      resource: Vote
+    - direction: tomany
+      fks:
+      - song_id
+      name: VoteSummaryList
+      resource: VoteSummary
+    - direction: toone
+      fks:
+      - contestant_id
+      name: contestant
+      resource: Contestant
+    type: Song
+    user_key: id
+  Vote:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: judge_id
+    - name: song_id
+    - name: points
+    - name: vote_time
+      type: DATETIME
+    description: Records votes given by judges to songs performed by contestants.
+    info_list: Records votes given by judges to songs performed by contestants.
+    tab_groups:
+    - direction: toone
+      fks:
+      - judge_id
+      name: judge
+      resource: Judge
+    - direction: toone
+      fks:
+      - song_id
+      name: song
+      resource: Song
+    type: Vote
+    user_key: id
+  VoteSummary:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: song_id
+    - name: total_points
+    description: Stores the total points received by each song, calculated manually.
+    info_list: Stores the total points received by each song, calculated manually.
+    tab_groups:
+    - direction: toone
+      fks:
+      - song_id
+      name: song
+      resource: Song
+    type: VoteSummary
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
